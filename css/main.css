@@ -1,0 +1,56 @@
+body {
+    font-family: tahoma;
+    color:#282828;
+    margin: 0px;
+    background-color: #282828;
+}
+
+#board{
+    color: wheat;
+    display:flex;
+justify-content: space-evenly;
+align-content: center;
+}
+.column{
+    align-content: start;
+    width:25%;
+    height: 3000px;
+    color:black;
+    background: gray;
+
+    border-radius: 10px;
+    padding: 5px;
+    margin: 10px 0;
+}
+li{
+    list-style-type: none;
+}
+ul{
+padding-inline-start: 0
+}
+
+
+.done{
+    text-decoration: line-through;
+}
+
+
+
+form{
+
+    border: #282828 1px;
+    background: lightgrey;
+    margin: 10px;
+    padding: 5px;
+    padding-top: 0px;
+    border-radius: 4px;
+}
+
+.card{
+    background: rgb(208 205 253);
+    padding: 10px;
+    border-radius: 9px;
+    margin: 10px 10px;
+    color: #521c1c;
+
+}
