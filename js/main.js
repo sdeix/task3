@@ -4,7 +4,7 @@ let eventBus = new Vue()
 Vue.component('board',{
 template:`
 <div id=board>
-<div class="column" class="column1">
+<div  class="column column1">
 
       <form>
            <div id="upperFormDiv">
@@ -26,23 +26,23 @@ template:`
       <p>Время дедлайна</p>
       <input type="submit" @click.prevent="createCard" value="Создать карточку"> 
       </form>
+      
+      <card v-for="card in column1" :pointss="card"> </card>
       </div>
-      <card v-for="(card, index) in column1" :createdate="card.createdate" :title="card.title" 
-      :desc="card.desc" :deadlineYear="card.deadline[index].year" :deadlineMonth="card.deadline[index].month" :deadlineDay="card.deadline[index].day" :lastediting="card.lastediting">  </card>
-<div class="column" class="column2">
-
+      <div  class="column column2">
+      <card v-for="card in column2" :pointss="card"> </card>
 
 </div>
 
 
-<div class="column" class="column3">
-
+<div  class="column column3">
+<card v-for="card in column3" :pointss="card"> </card>
 
 </div>
 
 
-<div class="column" class="column4">
-
+<div  class="column column4">
+<card v-for="card in column4" :pointss="card"> </card>
 
 </div>
 
@@ -76,16 +76,6 @@ data(){
       }
   },
 methods:{
-      But(){
-            this.q= this.date1[0]
-            this.q+= this.date1[1]
-            this.q+= this.date1[2]
-            this.q+= this.date1[3]
-            console.log(typeof(this.date1))        
-            console.log(this.date1)            
-            // console.log(this.q)
-            // console.log(this.date2.getFullYear())
-      },
       createCard(){
             if(typeof(this.deadlin) != "number"){
                   this.year = this.deadlin[0] + this.deadlin[1] + this.deadlin[2] + this.deadlin[3]
@@ -96,24 +86,39 @@ methods:{
                   this.deadline.push({day:this.day, month:this.month, year:this.year})
                   var now = new Date()
                   now = String(now)
-                  this.column1.push({createdate:now, title:this.title ? this.title: "Без названия", desc:this.desc ? this.desc:"Без описания", lastediting:now, deadline:this.deadline })
-                  console.log(this.column1)
+                  this.column1.push({createdate:now, title:this.title ? this.title: "Без названия", desc:this.desc ? this.desc:"Без описания", lastediting:now, deadline:this.deadline, delete:false})
+                  this.deadline=[]
             }
             
       }
 },
+mounted(){
+      eventBus.$on('deleteCard', cardsCheck => {
+            for(let i = 0; i < this.column1.length; i++){
+                  if(this.column1[i].delete){
+                        this.column1.splice(i, 1)
 
+            }}
+      })
+},
+watch:{
+      column1(){
+
+
+
+      }}
 
 })
 
 Vue.component('card',{
       template:`
       <div class=card>
-      <p class="createdate">Дата создания: {{createdate}}</p>
-      <p class="cardTitle">Название: {{title}}</p>
-      <p class="desc">Описание: {{desc}}</p>
-      <p class="deadline">Дэдлайн: {{deadlineDay}}-{{deadlineMonth}}-{{deadlineYear}}</p>
-      <p class="last" v-if="lastediting" >Время последнего редактирования: {{lastediting}}</p>
+      <p class="createdate">Дата создания: {{pointss.createdate}}</p>
+      <p class="cardTitle">Название: {{pointss.title}}</p>
+      <p class="desc">Описание: {{pointss.desc}}</p>
+      <p class="deadline">Дэдлайн: {{pointss.deadline[0].day}}-{{pointss.deadline[0].month}}-{{pointss.deadline[0].year}}</p>
+      <p class="last" v-if="pointss.lastediting" >Время последнего редактирования: {{pointss.lastediting}} </p>
+      <button  v-on:click="Delete()"    > Удалить </button>
       
              
       
@@ -123,20 +128,16 @@ Vue.component('card',{
       data(){
             return{
 
-
             }
         },
       methods:{
-      },
+            Delete(){
+                  this.pointss.delete = true
+                  eventBus.$emit('deleteCard')
+            },
+      },    
       props:{
-            createdate:Date(),
-            title: String,
-            desc:String,
-            deadlineYear:String,
-            deadlineMonth:String,
-            deadlineDay:String,
-
-            lastediting:String,
+            pointss: null,
 
       }
 
