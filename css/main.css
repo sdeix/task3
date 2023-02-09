@@ -2,11 +2,11 @@ body {
     font-family: tahoma;
     color:#282828;
     margin: 0px;
-    background-color: #282828;
+    background: rgb(207, 203, 203);
 }
 
 #board{
-    color: wheat;
+    color: rgb(0, 0, 0);
     display:flex;
 justify-content: space-evenly;
 align-content: center;
@@ -47,10 +47,15 @@ form{
 }
 
 .card{
-    background: rgb(208 205 253);
+    background: rgb(128, 126, 163);
     padding: 10px;
     border-radius: 9px;
     margin: 10px 10px;
     color: #521c1c;
+    font-weight: 1000;
 
 }
+.createdate{
+    font-weight: lighter;
+}
+
