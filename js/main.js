@@ -86,7 +86,7 @@ methods:{
                   this.deadline.push({day:this.day, month:this.month, year:this.year})
                   var now = new Date()
                   now = String(now)
-                  this.column1.push({createdate:now, title:this.title ? this.title: "Без названия", desc:this.desc ? this.desc:"Без описания", lastediting:now, deadline:this.deadline, delete:false})
+                  this.column1.push({createdate:now, title:this.title ? this.title: "Без названия", desc:this.desc ? this.desc:"Без описания", lastediting:now, deadline:this.deadline, delete:false, column:1, edit:false})
                   this.deadline=[]
             }
             
@@ -118,8 +118,15 @@ Vue.component('card',{
       <p class="desc">Описание: {{pointss.desc}}</p>
       <p class="deadline">Дэдлайн: {{pointss.deadline[0].day}}-{{pointss.deadline[0].month}}-{{pointss.deadline[0].year}}</p>
       <p class="last" v-if="pointss.lastediting" >Время последнего редактирования: {{pointss.lastediting}} </p>
-      <button  v-on:click="Delete()"    > Удалить </button>
-      
+      <button    @click="pointss.delete=true" v-on:click="Delete()" > Удалить </button>
+      <button    @click="pointss.edit=true"> Редактировать </button>
+
+      <div v-if="pointss.edit">
+      <p>Название: <input type="text" v-model="newTitle"></p>
+      <p>Описание: <input type="text" v-model="newDesc"></p>
+      <button    @click="pointss.edit=false"> Отмена </button>
+      <button    @click="pointss.edit=false" v-on:click="Edit()"> Подтвердить </button> </div>
+      <div v-else >  </div>
              
       
       
@@ -127,14 +134,19 @@ Vue.component('card',{
       `,
       data(){
             return{
-
+                  newTitle:"",
+                  newDesc: "",
             }
         },
       methods:{
             Delete(){
-                  this.pointss.delete = true
+                  console.log(this.pointss.edit)
                   eventBus.$emit('deleteCard')
             },
+            Edit(){
+                  this.pointss.title = this.newTitle,
+                  this.pointss.desc = this.newDesc
+            }
       },    
       props:{
             pointss: null,
