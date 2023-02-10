@@ -66,10 +66,10 @@ button{
     border-radius: 4px;
 }
 .fail{
-    padding: 5px;
+        padding: 5px;
     border-radius: 4px;
     background-color: rgb(80, 42, 42);
-    color: rgb(182, 82, 82);
+    color: rgb(146, 76, 76);
 }
 .success{
     padding: 5px;

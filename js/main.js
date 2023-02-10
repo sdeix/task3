@@ -252,7 +252,9 @@ Vue.component('card',{
       </div>
 
       <div v-if="pointss.column==3">
+      <div v-if="newComment">
       <button    @click="ThreeToTwo()"> <-- </button>
+      </div>
       <button    @click="ThreeToFour()"> --> </button>
       
       <p>Причина: <input type="text" v-model="newComment"></p>    
