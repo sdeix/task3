@@ -17,10 +17,9 @@ align-content: center;
     height: 3000px;
     color:black;
     background: gray;
-
     border-radius: 10px;
     padding: 5px;
-    margin: 10px 0;
+    margin: 10px 5px;
 }
 li{
     list-style-type: none;
@@ -34,7 +33,9 @@ padding-inline-start: 0
     text-decoration: line-through;
 }
 
-
+h2{
+    text-align: center;
+}
 
 form{
 
