@@ -173,7 +173,6 @@ mounted(){
                         this.column3[i].column = 4
                         this.column4.push(this.column3[i])
                         this.column3.splice(i, 1)
-                  console.log(this.column4)
                         
                         
 
@@ -265,10 +264,10 @@ Vue.component('card',{
       </div>
 
       <div v-if="pointss.result=='success'">
-     <p>карточка выполнена срок</p>
+     <p class="success">карточка выполнена срок</p>
       </div>
       <div v-if="pointss.result=='fail'">
-      <p>карточка просрочена</p>
+      <p class="fail">карточка просрочена</p>
        </div>
       </div>
       `,
