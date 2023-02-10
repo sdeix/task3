@@ -91,7 +91,7 @@ methods:{
                   var now = new Date()
                   now = String(now)
                   this.column1.push({createdate:now, move:this.move, title:this.title ? this.title: "Без названия", desc:this.desc ? this.desc:"Без описания", 
-                  lastediting:now, deadline:this.deadline, delete:false, column:1, edit:false, comment:""})
+                  lastediting:now, deadline:this.deadline, delete:false, column:1, edit:false, comment:"", result:""})
                   this.deadline=[]
             }
             
@@ -104,6 +104,21 @@ mounted(){
                         this.column1.splice(i, 1)
 
             }}
+            for(let i = 0; i < this.column2.length; i++){
+                  if(this.column2[i].delete){
+                        this.column2.splice(i, 1)
+
+            }}
+            for(let i = 0; i < this.column3.length; i++){
+                  if(this.column3[i].delete){
+                        this.column3.splice(i, 1)
+
+            }}
+            for(let i = 0; i < this.column4.length; i++){
+                  if(this.column4[i].delete){
+                        this.column4.splice(i, 1)
+
+            }}
       }),
       eventBus.$on('OneToTwo', movecard1 => {
             for(let i = 0; i < this.column1.length; i++){
@@ -112,7 +127,6 @@ mounted(){
                         this.column1[i].column = 2
                         this.column2.push(this.column1[i])
                         this.column1.splice(i, 1)
-                        console.log(this.column2)
                         
 
             }}
@@ -139,6 +153,18 @@ mounted(){
                         
 
             }}
+      }),
+      eventBus.$on('ThreeToFour', movecard4 => {
+            for(let i = 0; i < this.column3.length; i++){
+                  if(this.column3[i].move == "four"){
+                        this.column3[i].move = ""
+                        this.column3[i].column = 4
+                        this.column4.push(this.column3[i])
+                        this.column3.splice(i, 1)
+
+                        
+
+            }}
       })
 
 },
@@ -160,6 +186,7 @@ Vue.component('card',{
       <p class="deadline">Дэдлайн: {{pointss.deadline[0].day}}-{{pointss.deadline[0].month}}-{{pointss.deadline[0].year}}</p>
       <p class="last" v-if="pointss.lastediting" >Время последнего редактирования: {{pointss.lastediting}} </p>
       <button    @click="pointss.delete=true" v-on:click="Delete()" > Удалить </button>
+      <div v-if="pointss.column!=4">
       <button    @click="pointss.edit=true"> Редактировать </button>
 
       <div v-if="pointss.edit">
@@ -168,7 +195,7 @@ Vue.component('card',{
       <button    @click="pointss.edit=false"> Отмена </button>
       <button    @click="pointss.edit=false" v-on:click="Edit()"> Подтвердить </button> </div>
       <div v-else >  </div>
-
+      </div>
       <div v-if="pointss.column==1">
       <button    @click="OneToTwo()"> --></button>
       </div>
@@ -189,17 +216,27 @@ Vue.component('card',{
       <div v-if="pointss.comment">
       <p>Причина: {{pointss.comment}}</p>
       </div>
+
+      <div v-if="pointss.result=='success'">
+     <p>карточка выполнена срок</p>
+      </div>
+      <div v-if="pointss.result=='fail'">
+      <p>карточка просрочена</p>
+       </div>
+      </div>
       `,
       data(){
             return{
                   newTitle:"",
                   newDesc: "",
                   newComment:'',
+                  year:0,
+                  month:0,
+                  day:0,
             }
         },
       methods:{
             Delete(){
-                  console.log(this.pointss.edit)
                   eventBus.$emit('deleteCard')
             },
             Edit(){
@@ -223,6 +260,25 @@ Vue.component('card',{
                   this.newComment = "",
                   this.pointss.move = "two",
                   eventBus.$emit('ThreeToTwo')
+
+            },
+            ThreeToFour(){
+                  var now = new Date()
+                  this.year = now.getFullYear()
+                  this.month = now.getMonth()
+                  this.month+=1
+                  this.day = now.getDate()
+
+                  console.log(this.year)   
+                  console.log(this.month)   
+                  console.log(this.day) 
+                  if(this.year<=this.pointss.deadline[0].year){
+                        this.pointss.result = "success"                   
+                  }      
+
+                  this.newComment = "",
+                  this.pointss.move = "four",
+                  eventBus.$emit('ThreeToFour')
 
             }
       },    
