@@ -70,7 +70,7 @@ data(){
             year:"",
             month:"",
             day:"",
-
+            allColumns:[],
             move : "",
             title:"",
             desc: "",
@@ -98,6 +98,18 @@ methods:{
       }
 },
 mounted(){
+      if (localStorage.getItem('allColumns')) {
+            try {
+              this.allColumns = JSON.parse(localStorage.getItem('allColumns'));
+              this.column1 = this.allColumns[0]
+              this.column2 = this.allColumns[1]
+              this.column3 = this.allColumns[2]
+              this.column4 = this.allColumns[3]
+
+            } catch(e) {
+              localStorage.removeItem('allColumns');
+            }
+      }
       eventBus.$on('deleteCard', cardsCheck => {
             for(let i = 0; i < this.column1.length; i++){
                   if(this.column1[i].delete){
@@ -138,7 +150,7 @@ mounted(){
                         this.column2[i].column = 3
                         this.column3.push(this.column2[i])
                         this.column2.splice(i, 1)
-                        
+
 
             }}
       }),
@@ -161,7 +173,8 @@ mounted(){
                         this.column3[i].column = 4
                         this.column4.push(this.column3[i])
                         this.column3.splice(i, 1)
-
+                  console.log(this.column4)
+                        
                         
 
             }}
@@ -170,10 +183,44 @@ mounted(){
 },
 watch:{
       column1(){
+            this.allColumns = [this.column1,this.column2,this.column3, this.column4]
+            
 
 
 
-      }}
+
+            const parsed = JSON.stringify(this.allColumns);
+            localStorage.setItem('allColumns', parsed);
+
+
+      },
+      column2(){
+            allColumns = [this.column1, this.column2, this.column3, this.column4]
+
+            
+            const parsed = JSON.stringify(this.allColumns);
+            localStorage.setItem('allColumns', parsed);
+
+      },
+      column3(){
+            allColumns = [this.column1, this.column2, this.column3, this.column4]
+
+            
+            const parsed = JSON.stringify(this.allColumns);
+            localStorage.setItem('allColumns', parsed);
+
+
+      },
+      column4(){
+            allColumns = [this.column1, this.column2, this.column3, this.column4]
+
+            
+            const parsed = JSON.stringify(this.allColumns);
+            localStorage.setItem('allColumns', parsed);
+
+
+      },
+}
 
 })
 
@@ -269,12 +316,23 @@ Vue.component('card',{
                   this.month+=1
                   this.day = now.getDate()
 
-                  console.log(this.year)   
-                  console.log(this.month)   
-                  console.log(this.day) 
                   if(this.year<=this.pointss.deadline[0].year){
-                        this.pointss.result = "success"                   
+                        if(this.month<=this.pointss.deadline[0].month){
+                              if(this.day<=this.pointss.deadline[0].day){
+                                    this.pointss.result = "success"                   
+                              }      
+                              else{
+                                    this.pointss.result = "fail"  
+                              }                   
+                        }      
+                        else{
+                              this.pointss.result = "fail"  
+                        }  
+                                        
                   }      
+                  else{
+                        this.pointss.result = "fail"  
+                  }
 
                   this.newComment = "",
                   this.pointss.move = "four",
